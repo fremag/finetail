@@ -1,4 +1,4 @@
-using FineTail;
+namespace FineTail;
 
 public class OptionParser<T> where T : class, new()
 {
