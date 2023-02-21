@@ -14,6 +14,18 @@ public static class Program
 
     private static void Run(FineTailOptions fineTailOptions)
     {
+        var cursorVisible = Console.CursorVisible;
+        var background = Console.BackgroundColor;
+        var foreground = Console.ForegroundColor;
+        
+        Console.CancelKeyPress += (_, _) =>
+        {
+            Console.BackgroundColor = background;
+            Console.ForegroundColor = foreground;
+            Console.CursorVisible = cursorVisible;
+            Console.WriteLine("That's all folks !");
+        };
+    
         var colorConfigs = fineTailOptions.Colors;
         IFineTailView view;
         if( fineTailOptions.Interactive)
@@ -27,9 +39,6 @@ public static class Program
         var controller = new FineTailController(fineTailOptions.FilePattern, view, fineTailOptions.Filters);
 
         controller.Init();
-
-        Console.CursorVisible = false;
         controller.Run(fineTailOptions.Follow, fineTailOptions.Interactive);
-        Console.CursorVisible = true;
     }
 }
